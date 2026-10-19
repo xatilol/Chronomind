@@ -72,12 +72,3 @@ class FranjaHoraria:
             self.horaInicio < otraFranja.horaFin
             and otraFranja.horaInicio < self.horaFin
         )
-
-    def anadirDiccionario(self):
-        return {
-            "diaSemana": self.diaSemana,
-            "horaInicio": self.horaInicio,
-            "horaFin": self.horaFin,
-            "jornada": self.jornada
-        }
-
