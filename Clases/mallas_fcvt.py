@@ -1,7 +1,3 @@
-"""Mallas de las carreras de la FCVT: solo nombres de asignaturas por semestre.
-
-Cada carrera es una lista de semestres; el índice 0 es el semestre 1.
-"""
 
 TIC_DISENO = "Trabajo de Integración Curricular: Fase de Diseño"
 TIC_RESULTADOS = "Trabajo de Integración Curricular: Fase de Resultados e Informe"
