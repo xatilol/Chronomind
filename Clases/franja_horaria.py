@@ -71,4 +71,4 @@ class FranjaHoraria:
         return (
             self.horaInicio < otraFranja.horaFin
             and otraFranja.horaInicio < self.horaFin
-        )
+        
