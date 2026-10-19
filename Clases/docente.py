@@ -5,14 +5,35 @@ class Docente:
     # Atributo de clase: los días disponibles son comunes a los docentes.
     DIAS_LABORABLES = FranjaHoraria.DIAS_LABORABLES
 
-    def __init__(self, idDocente, nombreDocente):
-        if type(idDocente) != str or idDocente.strip() == "":
-            raise ValueError("El código del docente no puede estar vacío.")
+    def __init__(self, idDocente, nombreDocente, apellidoDocente, tituloGraduado,disponibilidad=None):
+        
+        if type(idDocente) != str or not idDocente.strip().isdigit() \ or len(idDocente.strip()) != 10:
+            raise ValueError("La cédula debe tener exactamente 10 dígitos numéricos.")
         self.__idDocente = idDocente.strip()
+        # Estas asignaciones pasan por los setters para validar los datos.
         self.nombreDocente = nombreDocente
+        self.apellidoDocente = apellidoDocente
+        self.tituloGraduado = tituloGraduado
         self.__asignaturasImparte = []
         self.__disponibilidad = []
         self.__horas = 0
+
+        # La disponibilidad inicial se recibe al crear el docente.
+        # Cada bloque contiene: dia, horaInicio y horaFin.
+        if disponibilidad is not None:
+            if type(disponibilidad) != list:
+                raise ValueError("La disponibilidad debe ser una lista de bloques.")
+            for bloque in disponibilidad:
+                dia = bloque["dia"]
+                inicio = bloque["horaInicio"]
+                fin = bloque["horaFin"]
+                if dia not in Docente.DIAS_LABORABLES:
+                    raise ValueError("Seleccione un día de lunes a viernes.")
+                FranjaHoraria.validarHoras(inicio, fin)
+                nuevo = {"dia": dia, "horaInicio": inicio, "horaFin": fin}
+                if nuevo in self.__disponibilidad:
+                    raise ValueError("Ese bloque de disponibilidad ya está registrado.")
+                self.__disponibilidad.append(nuevo)
 
     @property
     def idDocente(self):
@@ -27,6 +48,30 @@ class Docente:
         if type(valor) != str or valor.strip() == "":
             raise ValueError("El nombre del docente no puede estar vacío.")
         self.__nombreDocente = valor.strip()
+
+    @property
+    def apellidoDocente(self):
+        return self.__apellidoDocente
+
+    @apellidoDocente.setter
+    def apellidoDocente(self, valor):
+        if type(valor) != str or valor.strip() == "":
+            raise ValueError("El apellido del docente no puede estar vacío.")
+        self.__apellidoDocente = valor.strip()
+
+    @property
+    def tituloGraduado(self):
+        return self.__tituloGraduado
+
+    @tituloGraduado.setter
+    def tituloGraduado(self, valor):
+        if type(valor) != str or valor.strip() == "":
+            raise ValueError("El título del docente no puede estar vacío.")
+        self.__tituloGraduado = valor.strip()
+
+    @property
+    def nombreCompleto(self):
+        return f"{self.nombreDocente} {self.apellidoDocente}"
 
     @property
     def asignaturasImparte(self):
@@ -47,7 +92,6 @@ class Docente:
         return self.__horas
 
     #Método: vincularAsignatura
-
     def vincularAsignatura(self, carrera, asignatura):
         # Debe ser una asignatura existente en la malla de esa carrera.
         malla = carrera.mostrarMallaCurricular()
@@ -69,23 +113,14 @@ class Docente:
             "asignatura": asignatura
         })
 
-    @staticmethod
-    def validarDisponibilidad(dia, horaInicio, horaFin):
-        if dia not in Docente.DIAS_LABORABLES:
-            raise ValueError("Seleccione un día de lunes a viernes.")
-        FranjaHoraria.validarHoras(horaInicio, horaFin)
-
-    def registrarDisponibilidad(self, dia, horaInicio, horaFin):
-        self.validarDisponibilidad(dia, horaInicio, horaFin)
-        nuevo = {"dia": dia, "horaInicio": horaInicio, "horaFin": horaFin}
-        if nuevo in self.__disponibilidad:
-            raise ValueError("Ese bloque de disponibilidad ya está registrado.")
-        self.__disponibilidad.append(nuevo)
 
     #Método: comprobarDisponibilidad
 
     def comprobarDisponibilidad(self, dia, horaInicio, horaFin):
-        self.validarDisponibilidad(dia, horaInicio, horaFin)
+        if dia not in Docente.DIAS_LABORABLES:
+            raise ValueError("Seleccione un día de lunes a viernes.")
+        FranjaHoraria.validarHoras(horaInicio, horaFin)
+
         # Revisa cada hora solicitada. También admite bloques contiguos.
         for hora in range(horaInicio, horaFin):
             disponible = False
@@ -104,46 +139,3 @@ class Docente:
         if type(cantidad) != int or cantidad <= 0:
             raise ValueError("La cantidad de horas debe ser un entero positivo.")
         self.__horas += cantidad
-
-    def anadirDiccionario(self):
-        asignaturas = []
-        for registro in self.__asignaturasImparte:
-            asignaturas.append({
-                "carrera": registro["carrera"].nombre,
-                "idAsignatura": registro["asignatura"].idAsignatura
-            })
-        return {
-            "idDocente": self.idDocente,
-            "nombreDocente": self.nombreDocente,
-            "asignaturasImparte": asignaturas,
-            "disponibilidad": self.disponibilidad,
-            "horas": self.horas
-        }
-
-    @classmethod
-    def desdeDiccionario(cls, datos, carreras):
-        docente = cls(datos["idDocente"], datos["nombreDocente"])
-        for bloque in datos["disponibilidad"]:
-            docente.registrarDisponibilidad(
-                bloque["dia"], bloque["horaInicio"], bloque["horaFin"]
-            )
-        horas = datos["horas"]
-        if type(horas) != int or horas < 0:
-            raise ValueError("Las horas guardadas deben ser un entero no negativo.")
-        if horas > 0:
-            docente.acumularHorasDadas(horas)
-
-        # Recupera las mismas asignaturas cargadas en las mallas.
-        for referencia in datos["asignaturasImparte"]:
-            encontrada = False
-            for carrera in carreras:
-                if carrera.nombre == referencia["carrera"]:
-                    malla = carrera.mostrarMallaCurricular()
-                    for nivel in malla.niveles:
-                        for asignatura in malla.consultarAsignaturasNivel(nivel):
-                            if asignatura.idAsignatura == referencia["idAsignatura"]:
-                                docente.vincularAsignatura(carrera, asignatura)
-                                encontrada = True
-            if not encontrada:
-                raise ValueError("Una asignatura del docente ya no existe en su carrera.")
-        return docente
