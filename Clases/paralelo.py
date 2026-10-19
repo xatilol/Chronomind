@@ -22,14 +22,14 @@ class Paralelo:
             raise ValueError("La capacidad del paralelo debe ser un entero positivo.")
         self.__capacidadEstudiante = valor
 
-    #Método: validarLimiteEstudiantes
+    #Método:validarLimiteEstudiantes
 
     def validarLimiteEstudiantes(self, cantidadEstudiantes):
         if type(cantidadEstudiantes) != int or cantidadEstudiantes < 0:
             raise ValueError("La cantidad de estudiantes debe ser un entero no negativo.")
         return cantidadEstudiantes <= self.__capacidadEstudiante
 
-    #Método: asignarParHorario
+    #Método:validarLimiteEstudiantes
 
     def asignarParHorario(self, idHorario, periodo, nivel, carrera):
         if type(idHorario) != str or idHorario.strip() == "":
@@ -41,17 +41,6 @@ class Paralelo:
         if nivel not in carrera.mostrarMallaCurricular().niveles:
             raise ValueError("Ese nivel todavía no está registrado en la malla de la carrera.")
 
-        # Asociación: entrega este mismo paralelo al nuevo horario vacío.
         return HorarioCompleto(
             idHorario.strip(), periodo.strip(), nivel, carrera, self
         )
-
-    def anadirDiccionario(self):
-        return {
-            "letraParalelo": self.letraParalelo,
-            "capacidadEstudiante": self.capacidadEstudiante
-        }
-
-    @classmethod
-    def desdeDiccionario(cls, datos):
-        return cls(datos["letraParalelo"], datos["capacidadEstudiante"])
