@@ -1,54 +1,47 @@
-class Salon:
-    def __init__(self, idSalon, nombreSalon, capacidad, disponible=True):
-        if type(idSalon) != str or idSalon.strip() == "":
-            raise ValueError("El código del salón debe ser un texto no vacío.")
-        self.__idSalon = idSalon.strip()
-        self.nombreSalon = nombreSalon
-        self.capacidad = capacidad
-        self.disponible = disponible
+from abc import ABC, abstractmethod
 
-    @property
-    def idSalon(self):
-        return self.__idSalon
+class IReservable(ABC):
+    @abstractmethod
+    def estaDisponible(self):
+        pass
 
-    @property
-    def nombreSalon(self):
-        return self.__nombreSalon
-
-    @nombreSalon.setter
-    def nombreSalon(self, valor):
-        if type(valor) != str or valor.strip() == "":
-            raise ValueError("El nombre del salón no puede estar vacío.")
-        self.__nombreSalon = valor.strip()
-
-    @property
-    def capacidad(self):
-        return self.__capacidad
-
-    @capacidad.setter
-    def capacidad(self, valor):
-        if type(valor) != int or valor <= 0:
-            raise ValueError("La capacidad debe ser un entero positivo.")
-        self.__capacidad = valor
-
-    @property
-    def disponible(self):
-        return self.__disponible
-
-    @disponible.setter
-    def disponible(self, valor):
-        if type(valor) != bool:
-            raise ValueError("La disponibilidad debe ser True o False.")
-        self.__disponible = valor
-
-    #Método: validarCapacidad
-
+    @abstractmethod
     def validarCapacidad(self, cantidadEstudiantes):
-        if type(cantidadEstudiantes) != int or cantidadEstudiantes <= 0:
-            raise ValueError("La cantidad de estudiantes debe ser un entero positivo.")
-        return cantidadEstudiantes <= self.__capacidad
+        pass
 
-    #Método: estaDisponible
+class Salon(IReservable, ABC):
+    def __init__(self, idSalon, nombreSalon, capacidad, disponible=True):
+        pass
+
+    @abstractmethod
+    def obtenerDescripcion(self):
+        pass
+
+class Laboratorio(Salon):
+    def __init__(self, idSalon, nombreSalon, capacidad, tiposEquipos, cantidadEquipos, disponible=True):
+        pass
 
     def estaDisponible(self):
-        return self.__disponible
+        pass
+
+    def validarCapacidad(self, cantidadEstudiantes):
+        pass
+
+    def obtenerDescripcion(self):
+        pass
+
+class INotificador(ABC):
+    @abstractmethod
+    def notificar(self, mensaje):
+        pass
+
+class NotificadorConsola(INotificador):
+    def notificar(self, mensaje):
+        pass
+
+class ServicioReserva:
+    def __init__(self, notificador: INotificador):
+        self.__notificador = notificador  
+
+    def reservar(self, salon: Salon, cantidadEstudiantes):
+        pass
