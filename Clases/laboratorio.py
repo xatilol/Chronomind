@@ -44,20 +44,4 @@ class Laboratorio(Salon):
             raise ValueError("La cantidad requerida debe ser un entero positivo.")
         return cantidadRequerida <= self.__cantidadEquipos
 
-    def anadirDiccionario(self):
-        # Reutiliza el diccionario de Salon y añade los datos propios.
-        datos = super().anadirDiccionario()
-        datos["tiposEquipos"] = self.tiposEquipos
-        datos["cantidadEquipos"] = self.cantidadEquipos
-        return datos
 
-    @classmethod
-    def desdeDiccionario(cls, datos):
-        return cls(
-            datos["idSalon"],
-            datos["nombreSalon"],
-            datos["capacidad"],
-            datos["tiposEquipos"],
-            datos["cantidadEquipos"],
-            datos["disponible"]
-        )
