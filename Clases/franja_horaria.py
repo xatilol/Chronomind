@@ -65,10 +65,4 @@ class FranjaHoraria:
 
     #Método: cruzaConOtroHorario
 
-    def cruzaConOtroHorario(self, otraFranja):
-        if self.diaSemana != otraFranja.diaSemana:
-            return False
-        return (
-            self.horaInicio < otraFranja.horaFin
-            and otraFranja.horaInicio < self.horaFin
-        )
+
