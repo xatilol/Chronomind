@@ -45,7 +45,7 @@ class HorarioCompleto:
     def materias(self):
         return self.__materias.copy()
 
-    #Método: verificarCrucesHorario
+    #Método: verificarCrucesHorario#Método: verificarCrucesHorario
 
     def verificarCrucesHorario(self, materia, otrosHorarios=None):
         for existente in self.__materias:
@@ -58,15 +58,13 @@ class HorarioCompleto:
                         if materia.validarChoqueMaterias(existente):
                             return True
         return False
-
+    
     #Método: agregarMateria
 
-    def agregarMateria(self, idClase, asignatura, docente, salon,
-                       franjaHoraria, otrosHorarios=None):
+    def agregarMateria(self, idClase, asignatura, docente, salon,franjaHoraria, otrosHorarios=None):
+
         # Composición: el horario crea la asignación que va a contener.
-        nueva = MateriasHorario(
-            idClase, asignatura, docente, salon, self.paralelo,
-            franjaHoraria, self.carrera, self.nivel, self.periodo
+        nueva = MateriasHorario(idClase, asignatura, docente, salon, self.paralelo, franjaHoraria, self.carrera, self.nivel, self.periodo
         )
         nueva.validarAsignacion()
         for materia in self.__materias:
@@ -88,8 +86,8 @@ class HorarioCompleto:
             raise ValueError("Se superarían las horas semanales de esta asignatura.")
         self.__materias.append(nueva)
         return nueva
-
-    #Método: quitarMateria
+    
+    #Método:quitarMateria
 
     def quitarMateria(self, idClase):
         if type(idClase) != str or idClase.strip() == "":
@@ -100,7 +98,7 @@ class HorarioCompleto:
                 return
         raise ValueError("No existe una clase con ese código en este horario.")
 
-    #Método: verHorarioCompleto
+    #Método:verHorarioCompleto
 
     def verHorarioCompleto(self):
         texto = f"Horario {self.idHorario}\n"
@@ -109,7 +107,6 @@ class HorarioCompleto:
         if not self.__materias:
             texto += "Todavía no hay clases asignadas.\n"
 
-        # Recorremos los días y horas en orden, sin ordenar con funciones avanzadas.
         for dia in FranjaHoraria.DIAS_LABORABLES:
             for hora in range(7, 20):
                 for materia in self.__materias:
@@ -128,16 +125,3 @@ class HorarioCompleto:
                     horas += materia.franjaHoraria.horaFin - materia.franjaHoraria.horaInicio
             texto += f"{asignatura.nombreAsignatura}: {horas}/{asignatura.horasSemanales}\n"
         return texto
-
-    def anadirDiccionario(self):
-        materias = []
-        for materia in self.__materias:
-            materias.append(materia.anadirDiccionario())
-        return {
-            "idHorario": self.idHorario,
-            "periodo": self.periodo,
-            "nivel": self.nivel,
-            "carrera": self.carrera.nombre,
-            "paralelo": self.paralelo.letraParalelo,
-            "materias": materias
-        }
