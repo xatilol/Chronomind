@@ -51,7 +51,6 @@ class Salon:
     #Método: estaDisponible
 
     def estaDisponible(self):
-        # Indica si está habilitado. Los choques por hora se revisan aparte.
         return self.__disponible
 
     def anadirDiccionario(self):
