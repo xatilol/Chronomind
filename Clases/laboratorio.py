@@ -42,6 +42,6 @@ class Laboratorio(Salon):
     def ComprobarCuentaEquipos(self, cantidadRequerida):
         if type(cantidadRequerida) != int or cantidadRequerida <= 0:
             raise ValueError("La cantidad requerida debe ser un entero positivo.")
-
+        return cantidadRequerida <= self.__cantidadEquipos
 
 
