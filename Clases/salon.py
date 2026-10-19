@@ -52,6 +52,3 @@ class Salon:
 
     def estaDisponible(self):
         return self.__disponible
-
-   
-   
