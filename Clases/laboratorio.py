@@ -8,6 +8,10 @@ class Laboratorio(Salon):
         self.tiposEquipos = tiposEquipos
         self.cantidadEquipos = cantidadEquipos
 
+    @property
+    def tiposEquipos(self):
+        return self.__tiposEquipos.copy()
+
     @tiposEquipos.setter
     def tiposEquipos(self, valores):
         if type(valores) != list or len(valores) == 0:
