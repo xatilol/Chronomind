@@ -59,6 +59,3 @@ class Asignatura:
         informacion += f"Horas semanales: {self.horasSemanales}\n"
         informacion += f"Necesita laboratorio: {laboratorio}"
         return informacion
-
-
-        
