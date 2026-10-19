@@ -68,4 +68,4 @@ class Asignatura:
             "nombreAsignatura": self.nombreAsignatura,
             "horasSemanales": self.horasSemanales,
             "necesitaLaboratorio": self.necesitaLaboratorio
-        }
+        
