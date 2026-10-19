@@ -4,14 +4,12 @@ class Asignatura:
             raise ValueError("El código debe ser un texto no vacío.")
 
         self.__idAsignatura = idAsignatura.strip()
-        # Estas asignaciones pasan por los setters para validar los datos.
         self.nombreAsignatura = nombreAsignatura
         self.horasSemanales = horasSemanales
         self.necesitaLaboratorio = necesitaLaboratorio
 
     @property
     def idAsignatura(self):
-        # Solo lectura: cambiarlo sin revisar la malla podría duplicar códigos.
         return self.__idAsignatura
 
     @property
