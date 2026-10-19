@@ -81,11 +81,3 @@ class FranjaHoraria:
             "jornada": self.jornada
         }
 
-    @classmethod
-    def desdeDiccionario(cls, datos):
-        return cls(
-            datos["diaSemana"],
-            datos["horaInicio"],
-            datos["horaFin"],
-            datos["jornada"]
-        )
