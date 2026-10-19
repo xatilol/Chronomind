@@ -1,5 +1,3 @@
-"""Menú inicial de Chronomind v1 (avance simple). Ejecutar este archivo."""
-
 import json
 import tkinter as tk
 from tkinter import ttk, messagebox
