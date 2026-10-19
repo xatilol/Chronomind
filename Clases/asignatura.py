@@ -60,10 +60,5 @@ class Asignatura:
         informacion += f"Necesita laboratorio: {laboratorio}"
         return informacion
 
-    def anadirDiccionario(self):
-        return {
-            "idAsignatura": self.idAsignatura,
-            "nombreAsignatura": self.nombreAsignatura,
-            "horasSemanales": self.horasSemanales,
-            "necesitaLaboratorio": self.necesitaLaboratorio
+
         
