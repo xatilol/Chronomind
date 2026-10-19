@@ -53,12 +53,5 @@ class Salon:
     def estaDisponible(self):
         return self.__disponible
 
-    def anadirDiccionario(self):
-        return {
-            "idSalon": self.idSalon,
-            "nombreSalon": self.nombreSalon,
-            "capacidad": self.capacidad,
-            "disponible": self.disponible
-        }
-
+   
    
