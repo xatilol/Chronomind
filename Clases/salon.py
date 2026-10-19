@@ -61,11 +61,4 @@ class Salon:
             "disponible": self.disponible
         }
 
-    @classmethod
-    def desdeDiccionario(cls, datos):
-        return cls(
-            datos["idSalon"],
-            datos["nombreSalon"],
-            datos["capacidad"],
-            datos["disponible"]
-        )
+   
