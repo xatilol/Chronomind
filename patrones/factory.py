@@ -1,4 +1,4 @@
-from dominio.asignatura import RequisitoAulaTeorica, RequisitoLaboratorio
+from dominio.asignatura import RequisitoAulaTeorica, RequisitoLaboratorio, RequisitoVirtual
 from dominio.laboratorio import Laboratorio
 from dominio.salon import Aula
 
@@ -32,6 +32,8 @@ class FabricaRequisitos:
     def crear(datos):
         if datos is None or datos.get("tipo", "aula") == "aula":
             return RequisitoAulaTeorica()
+        if datos["tipo"] == "virtual":
+            return RequisitoVirtual()
         if datos["tipo"] == "laboratorio":
             return RequisitoLaboratorio(datos.get("equiposMinimos", 1), datos.get("tipoEquipo", ""))
         raise ValueError("Tipo de requisito desconocido.")

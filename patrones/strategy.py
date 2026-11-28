@@ -16,7 +16,7 @@ class EstrategiaDistribucion(ABC):
         return [base + 1 if i < extra else base for i in range(cantidad)]
 
     @abstractmethod
-    def ordenDias(self, indiceBloque):
+    def ordenDias(self, indiceBloque, dias):
         pass
 
     def ordenHoras(self, duracion):
@@ -28,8 +28,8 @@ class DistribucionEquilibrada(EstrategiaDistribucion):
     nombre = "Equilibrada (bloques de 2 h en varios días)"
     MAX_BLOQUE = 2
 
-    def ordenDias(self, indiceBloque):
-        dias = list(FranjaHoraria.DIAS_LABORABLES)
+    def ordenDias(self, indiceBloque, dias):
+        dias = list(dias)
         inicio = (indiceBloque * 2) % len(dias)
         return dias[inicio:] + dias[:inicio]
 
@@ -39,8 +39,8 @@ class DistribucionCompacta(EstrategiaDistribucion):
     nombre = "Compacta (bloques largos, menos días)"
     MAX_BLOQUE = 4
 
-    def ordenDias(self, indiceBloque):
-        return list(FranjaHoraria.DIAS_LABORABLES)
+    def ordenDias(self, indiceBloque, dias):
+        return list(dias)
 
 
 ESTRATEGIAS = [DistribucionEquilibrada, DistribucionCompacta]
